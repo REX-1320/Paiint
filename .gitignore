@@ -1,0 +1,49 @@
+# Build outputs
+build/
+rex-core/build/
+rex-core/.build/
+rex-core/src/generated/
+**/bin/
+**/obj/
+
+# IDE
+.vs/
+*.user
+*.suo
+*.sln.docstates
+
+# .NET
+*.nupkg
+*.log
+
+# Rust (if present)
+target/
+
+# CMake
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
+
+# Protobuf
+*.pb.h
+*.pb.cc
+
+# Node / TypeScript
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Local snapshots (full-UI backup before ship-scope trim; see backup/)
+backup/
+
+# OS
+Thumbs.db
+.DS_Store
+
+.opencode/ralph-loop.local.md
+
+# MSIX build output (packaging/msix/build-msix.ps1)
+packaging/msix/out/
+
+# vcpkg install trees (per-project, ~400 MB of prebuilt libs)
+vcpkg_installed/

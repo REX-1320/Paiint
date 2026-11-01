@@ -1,0 +1,60 @@
+#pragma once
+
+// ─── Display-topology change detection (P0-2 / G3) ──────────────────────────
+//
+// CheckDisplayChanges used to compare only monitor count + primary W/H, so
+// secondary-only moves, same-resolution primary swaps and DPI changes never
+// reconciled (and a same-resolution OS HDR toggle never even reached the
+// renderer). The predicate below compares everything rendering depends on.
+//
+// NOTE: a same-resolution OS HDR toggle changes no geometry, so it never
+// flips this predicate — HDR is re-evaluated separately on every topology
+// check via D3D12Renderer::RefreshHdrOutput (cheap: SwapChain bails out
+// before any DXGI churn when nothing changed).
+
+#include <vector>
+
+#include <rex/wallpaper/IWallpaperEngine.hpp>
+
+namespace rex::wallpaper {
+
+/// True when the rendering-relevant topology changed: arrival/removal,
+/// geometry move/resize, primary swap, DPI change, physical-monitor swap
+/// (EDID hash: same device name + geometry, different panel), or adapter
+/// move (same everything, different GPU). Order-sensitive
+/// (EnumDisplayMonitors order is deterministic per topology); a spurious
+/// true only costs an idempotent refresh + an early-return Resize.
+/// Unknown (0) vs known adapter/EDID counts as changed (safe direction:
+/// reconcile once rather than miss a move); 0-vs-0 is steady.
+inline bool MonitorTopologyChanged(const std::vector<MonitorInfo>& before,
+                                   const std::vector<MonitorInfo>& after) {
+    if (before.size() != after.size()) return true;
+    for (size_t i = 0; i < before.size(); ++i) {
+        const MonitorInfo& a = before[i];
+        const MonitorInfo& b = after[i];
+        if (a.id != b.id || a.x != b.x || a.y != b.y || a.width != b.width ||
+            a.height != b.height || a.isPrimary != b.isPrimary ||
+            a.dpiScale != b.dpiScale || a.refreshHz != b.refreshHz ||
+            a.edidHash != b.edidHash || a.adapterLuid != b.adapterLuid) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// Display refresh rate for the cadence controller (Phase 4): the current
+/// monitor's reported Hz, or the fallback when missing/unreported. Pure so
+/// the topology hook stays testable; the hook refreshes the engine's cached
+/// Hz from each fresh enumeration, so a mid-playback Hz change recalculates
+/// cadence without restarting the wallpaper.
+inline int SelectDisplayHz(const std::vector<MonitorInfo>& monitors,
+                           const std::string& currentId, int fallbackHz) {
+    for (const auto& m : monitors) {
+        if (m.id == currentId && m.refreshHz > 0) {
+            return m.refreshHz;
+        }
+    }
+    return fallbackHz;
+}
+
+}  // namespace rex::wallpaper

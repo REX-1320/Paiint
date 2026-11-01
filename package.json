@@ -1,0 +1,23 @@
+{
+  "name": "paiint-ui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Paiint desktop — live wallpaper engine for Windows",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "dev": "pnpm --dir app dev",
+    "build": "pnpm --dir app build",
+    "preview": "pnpm --dir app preview",
+    "lint": "pnpm --dir app lint"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "typescript": "^5.8.0"
+  }
+}

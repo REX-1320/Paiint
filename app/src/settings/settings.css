@@ -1,0 +1,170 @@
+/* The global Settings page.
+   Tokens only (--surface-*, --stroke-*, --text-*, --fill-*) - the palette
+   guard (app/tools/check-palette.cjs) fails the build on raw colour
+   literals. No glows; champagne stays in the outlines. */
+
+.settings-page {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 4px 2px 24px;
+}
+
+.settings-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 12px;
+  align-items: start;
+  max-width: 1180px;
+}
+
+.settings-col .prop-section {
+  background: var(--surface-content);
+  border: 1px solid var(--stroke-default);
+  border-radius: 14px;
+}
+
+.settings-col .prop-section-head {
+  color: var(--text-primary);
+}
+
+.settings-col .prop-group {
+  background: var(--fill-hover);
+  border-color: var(--stroke-subtle);
+}
+
+/* Read-only engine values read as a table, not as editable fields. */
+.settings-col .pl-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The engine panel: a compact metric grid instead of one row per value. */
+.settings-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 4px 18px;
+  padding: 2px 1px;
+}
+
+.settings-metric {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+  border-bottom: 1px solid var(--stroke-subtle);
+  padding: 3px 0;
+}
+
+.settings-metric .k {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+}
+
+.settings-metric .v {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+
+/* About: identity block, privacy note and the legal-document viewer. */
+.settings-about {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 2px 1px;
+}
+
+.settings-about-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.settings-about-mark {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  object-fit: contain;
+  /* The mark is transparent artwork: no tile, border or glow behind it. */
+}
+
+.settings-about-id {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.settings-about-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.settings-about-tagline {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.settings-about-version {
+  flex: none;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-border);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--gold);
+}
+
+.settings-about-blurb,
+.settings-about-note,
+.settings-about-error {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.settings-about-note {
+  color: var(--text-tertiary);
+}
+
+.settings-about-error {
+  color: var(--gold-deep);
+}
+
+.settings-about-legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.settings-legal-dialog {
+  max-width: 720px;
+}
+
+.settings-legal-text {
+  max-height: min(60vh, 520px);
+  overflow: auto;
+  margin: 0;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--stroke-subtle);
+  background: var(--fill-hover);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}

@@ -1,0 +1,23 @@
+/* Glass_effect — the window's ground.
+ *
+ * The window is NOT transparent (main.cjs:285-310): it uses
+ * `backgroundMaterial: 'mica'`, so DWM draws the blurred desktop wallpaper
+ * behind the app. The app's ground is **Pure Obsidian #050505** — an opaque
+ * ground, so the panels above it read against one constant value no matter
+ * what the user's wallpaper is doing.
+ *
+ * No filter, no blur: a live blur is a per-frame GPU pass competing with the
+ * wallpaper's own D3D12 present (the 2026-10-11 lesson). */
+
+.glass-effect {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  border-radius: var(--glass-radius, 0);
+  background: transparent;
+}
+
+.glass-effect.dark {
+  background: rgb(var(--obsidian-950));
+}
